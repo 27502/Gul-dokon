@@ -1,0 +1,35 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background-color: white;
+    border-bottom: 1px solid #eaeaea;
+    flex-wrap: wrap;
+  }
+  
+  .logo {
+    height: 32px;
+  }
+  
+  .navbar__center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .search-input {
+    width: 150px;
+  }
+  
+  .login-btn {
+    background-color: #46a358;
+    border-color: #46a358;
+  }
+  
