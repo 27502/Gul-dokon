@@ -1,22 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import HeroCarousel from "./components/HeroCarousel/HeroCarousel";
-import Filter from "./components/Filter/Filter";
-import Category from "./components/Category/Category";
 import AppFooter from "./components/Footer/Footer";
+import Category from "./components/Category/Category";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 
 const App = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar onLoginClick={() => setShowLogin(true)} />
       <HeroCarousel />
-
-      <div style={{ display: "flex", gap: "24px", padding: "20px" }}>
-        <Filter />
-        <Category />
-      </div>
-
+      <Category />
       <AppFooter />
+      {showLogin && <Login onClose={() => setShowLogin(false)} />}
+
     </>
   );
 };

@@ -1,10 +1,14 @@
 import React from "react";
 import { Menu, Button, Badge, Input } from "antd";
-import { ShoppingCartOutlined, SearchOutlined, LoginOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  SearchOutlined,
+  LoginOutlined,
+} from "@ant-design/icons";
 import "./Navbar.css";
 import logo from "../../assets/images/Group.svg";
 
-const Navbar = () => {
+const Navbar = ({ onLoginClick }) => {
   return (
     <div className="navbar">
       <div className="navbar__left">
@@ -12,7 +16,10 @@ const Navbar = () => {
       </div>
 
       <div className="navbar__center">
-        <Menu mode="horizontal" selectable={false} items={[
+        <Menu
+          mode="horizontal"
+          selectable={false}
+          items={[
             {
               key: "home",
               label: "Home",
@@ -21,15 +28,25 @@ const Navbar = () => {
               key: "shop",
               label: "Shop",
             },
-          ]} />
+          ]}
+        />
       </div>
 
       <div className="navbar__right">
-        <Input placeholder="Search" prefix={<SearchOutlined />} className="search-input" />
+        <Input
+          placeholder="Search"
+          prefix={<SearchOutlined />}
+          className="search-input"
+        />
         <Badge count={0} showZero>
           <ShoppingCartOutlined className="icon" />
         </Badge>
-        <Button icon={<LoginOutlined />} type="primary" className="login-btn">
+        <Button
+          onClick={onLoginClick}
+          icon={<LoginOutlined />}
+          type="primary"
+          className="login-btn"
+        >
           Login
         </Button>
       </div>
