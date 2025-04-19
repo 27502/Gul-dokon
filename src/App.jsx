@@ -1,17 +1,24 @@
-import Navbar from './components/Navbar/Navbar';
-import AppFooter from './components/Footer/Footer';
+import React from "react";
+import Navbar from "./components/Navbar/Navbar";
+import HeroCarousel from "./components/HeroCarousel/HeroCarousel";
+import Filter from "./components/Filter/Filter";
+import Category from "./components/Category/Category";
+import AppFooter from "./components/Footer/Footer";
 
-function App() {
+const App = () => {
   return (
     <>
       <Navbar />
-      {/* Asosiy kontent bo'limi */}
-      <div style={{ minHeight: '80vh', padding: '20px' }}>
-        {/* Router Pages yoki boshqa contentlar bo‘ladi */}
+      <HeroCarousel />
+
+      <div style={{ display: "flex", gap: "24px", padding: "20px" }}>
+        <Filter />
+        <Category />
       </div>
+
       <AppFooter />
     </>
   );
-}
+};
 
 export default App;

@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Menu, Button, Badge, Input } from "antd";
 import { ShoppingCartOutlined, SearchOutlined, LoginOutlined } from "@ant-design/icons";
 import "./Navbar.css";
-import logo from "../../assets/Group.svg"; // o‘zing joylashtirgan logoni shu yerga
+import logo from "../../assets/images/Group.svg";
 
 const Navbar = () => {
   return (
@@ -13,10 +12,16 @@ const Navbar = () => {
       </div>
 
       <div className="navbar__center">
-        <Menu mode="horizontal" selectable={false}>
-          <Menu.Item key="home">Home</Menu.Item>
-          <Menu.Item key="shop">Shop</Menu.Item>
-        </Menu>
+        <Menu mode="horizontal" selectable={false} items={[
+            {
+              key: "home",
+              label: "Home",
+            },
+            {
+              key: "shop",
+              label: "Shop",
+            },
+          ]} />
       </div>
 
       <div className="navbar__right">
