@@ -1,4 +1,3 @@
-// Register.jsx
 import React, { useState } from "react";
 import { Input, Button, message, Form } from "antd";
 import axios from "axios";
@@ -15,8 +14,7 @@ const Register = () => {
       const res = await axios.post(
         "https://green-shop-backend.onrender.com/api/user/sign-up?access_token=6506e8bd6ec24be5de357927",
         {
-            
-          surname,
+          surname: username, // 🔄 to‘g‘rilandi
           password,
           email,
         }
@@ -39,10 +37,15 @@ const Register = () => {
         <Form.Item
           label="Foydalanuvchi nomi"
           name="surname"
-          rules={[{ required: true, message: "Iltimos, foydalanuvchi nomini kiriting!" }]}
+          rules={[
+            {
+              required: true,
+              message: "Iltimos, foydalanuvchi nomini kiriting!",
+            },
+          ]}
         >
           <Input
-            value={surname}
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Foydalanuvchi nomi"
           />
@@ -51,7 +54,12 @@ const Register = () => {
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: "Iltimos, email manzilingizni kiriting!" }]}
+          rules={[
+            {
+              required: true,
+              message: "Iltimos, email manzilingizni kiriting!",
+            },
+          ]}
         >
           <Input
             value={email}
@@ -63,7 +71,12 @@ const Register = () => {
         <Form.Item
           label="Parol"
           name="password"
-          rules={[{ required: true, message: "Iltimos, parolni kiriting!" }]}
+          rules={[
+            {
+              required: true,
+              message: "Iltimos, parolni kiriting!",
+            },
+          ]}
         >
           <Input.Password
             value={password}
@@ -80,10 +93,11 @@ const Register = () => {
       </Form>
 
       <p className="login-link">
-        Yoki <Link  to="/login">Kirish</Link>
+        Yoki <Link to="/login">Kirish</Link>
       </p>
     </div>
   );
 };
+
 
 export default Register;
