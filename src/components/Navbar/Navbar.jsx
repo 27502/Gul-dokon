@@ -1,22 +1,36 @@
 import React from "react";
-import { Menu, Button, Badge, Input } from "antd";
-import { ShoppingCartOutlined, SearchOutlined, LoginOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // useNavigate qo'shish
 import "./Navbar.css";
+import { Menu, Button, Badge, Input, Dropdown } from "antd";
+import {
+  ShoppingCartOutlined,
+  SearchOutlined,
+  LoginOutlined,
+  UserOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../redux/slices/userSlice";
 import logo from "../../assets/images/Group.svg";
 
-const Navbar = ({ onLoginClick, onRegisterClick }) => {
-  const navigate = useNavigate(); // navigate xookini chaqirish
+const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
-  // Home tugmasi bosilganda asosiy sahifaga o'tish
-  const handleHomeClick = () => {
-    navigate("/"); // asosiy sahifaga o'tish
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
-  // Login tugmasi bosilganda sahifaga o'tish
-  const handleLoginClick = () => {
-    navigate("/login"); // login sahifasiga o'tish
-  };
+  const menuItems = [
+    {
+      key: "logout",
+      label: <span style={{ color: "red" }}>Log out</span>,
+      icon: <LogoutOutlined />,
+      onClick: handleLogout,
+    },
+  ];
 
   return (
     <div className="navbar">
@@ -31,9 +45,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           items={[
             {
               key: "home",
-              label: (
-                <a onClick={handleHomeClick}>Home</a> // Home tugmasi bosilganda asosiy sahifaga o'tadi
-              ),
+              label: <a onClick={() => navigate("/")}>Home</a>,
             },
             {
               key: "shop",
@@ -53,14 +65,22 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           <ShoppingCartOutlined className="icon" />
         </Badge>
 
-        <Button
-          onClick={handleLoginClick} // Login tugmasi bosilganda navigate ishlaydi
-          icon={<LoginOutlined />}
-          type="primary"
-          className="login-btn"
-        >
-          Login
-        </Button>
+        {user ? (
+          <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+            <Button icon={<UserOutlined />} className="login-btn">
+              {user.name || user.email}
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button
+            onClick={() => navigate("/login")}
+            icon={<LoginOutlined />}
+            type="primary"
+            className="login-btn"
+          >
+            Login
+          </Button>
+        )}
       </div>
     </div>
   );

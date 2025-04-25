@@ -1,103 +1,97 @@
-import React, { useState } from "react";
-import { Input, Button, message, Form } from "antd";
+import { useState } from "react";
+import { Button, Form, Input, Typography, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import "./Register.css";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slices/userSlice";
+
+const { Title, Text } = Typography;
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSignUp = async () => {
+  const handleRegister = async (values) => {
     try {
+      setLoading(true);
       const res = await axios.post(
         "https://green-shop-backend.onrender.com/api/user/sign-up?access_token=6506e8bd6ec24be5de357927",
-        {
-          surname: username, // 🔄 to‘g‘rilandi
-          password,
-          email,
-        }
+        values
       );
-      message.success("Ro'yxatdan muvaffaqiyatli o'tdingiz!");
+
+      const userData = res.data.user;
+      const token = res.data.token;
+
+      // Reduxga va localStorage'ga yozish
+      dispatch(login({ user: userData, token }));
+
+      message.success("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
+      navigate("/");
     } catch (error) {
-      if (error.response?.status === 409) {
-        message.error("Bu foydalanuvchi allaqachon mavjud.");
-      } else {
-        message.error("Serverda muammo yuz berdi.");
-        console.log(error);
-      }
+      console.error(error);
+      message.error("Ro'yxatdan o'tishda xatolik!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="register-container">
-      <h2 className="register-title">Ro'yxatdan o'tish</h2>
-      <Form onFinish={handleSignUp} className="register-form">
+    <div
+      className="register-container"
+      style={{
+        maxWidth: 400,
+        margin: "50px auto",
+        padding: 24,
+        border: "1px solid #f0f0f0",
+        borderRadius: 10,
+      }}
+    >
+      <Title level={3} style={{ textAlign: "center" }}>
+        Ro'yxatdan o'tish
+      </Title>
+
+      <Form layout="vertical" onFinish={handleRegister}>
         <Form.Item
-          label="Foydalanuvchi nomi"
-          name="surname"
-          rules={[
-            {
-              required: true,
-              message: "Iltimos, foydalanuvchi nomini kiriting!",
-            },
-          ]}
+          name="name"
+          label="Ism"
+          rules={[{ required: true, message: "Ismingizni kiriting!" }]}
         >
-          <Input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Foydalanuvchi nomi"
-          />
+          <Input placeholder="Ism kiriting" />
         </Form.Item>
 
         <Form.Item
-          label="Email"
           name="email"
+          label="Email"
           rules={[
-            {
-              required: true,
-              message: "Iltimos, email manzilingizni kiriting!",
-            },
+            { required: true, message: "Emailni kiriting!" },
+            { type: "email", message: "Email noto‘g‘ri!" },
           ]}
         >
-          <Input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
+          <Input placeholder="Email kiriting" />
         </Form.Item>
 
         <Form.Item
-          label="Parol"
           name="password"
-          rules={[
-            {
-              required: true,
-              message: "Iltimos, parolni kiriting!",
-            },
-          ]}
+          label="Parol"
+          rules={[{ required: true, message: "Parolni kiriting!" }]}
         >
-          <Input.Password
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Parol"
-          />
+          <Input.Password placeholder="Parol kiriting" />
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-btn">
-            Ro'yxatdan o'tish
+          <Button type="primary" htmlType="submit" block loading={loading}>
+            Ro‘yxatdan o‘tish
           </Button>
         </Form.Item>
-      </Form>
 
-      <p className="login-link">
-        Yoki <Link to="/login">Kirish</Link>
-      </p>
+        <Form.Item style={{ textAlign: "center" }}>
+          <Text>Allaqachon akkauntingiz bormi? </Text>
+          <Link to="/login">Kirish</Link>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
-
 
 export default Register;
